@@ -8,4 +8,6 @@ typedef struct{
       struct node *next;
       }node;
 int main(){
+      printf("I am severely cooked.");
+      return 0;
 }
