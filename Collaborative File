@@ -9,5 +9,6 @@ typedef struct{
       }node;
 int main(){
       printf("I am severely cooked.");
+      printf("I am so tired of being alive.");
       return 0;
 }
