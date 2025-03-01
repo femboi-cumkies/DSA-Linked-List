@@ -17,7 +17,6 @@ void deleteAtStart(struct Node** head) {
     printf("Node deleted at the start.\n");
 }
 
-
 void printList(struct Node* head) {
     while (head != NULL) {
         printf("%d -> ", head->data);
@@ -25,7 +24,6 @@ void printList(struct Node* head) {
     }
     printf("NULL\n");
 }
-
 
 int main() {
     struct Node* head = (struct Node*)malloc(sizeof(struct Node));
