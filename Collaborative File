@@ -1,14 +1,49 @@
 #include <stdio.h>
-#include <conio.h>
-#include <ctype.h>
-#include <mem.h>
-#include <memalloc.h>
-typedef struct{
-      int data;
-      struct node *next;
-      }node;
-int main(){
-      printf("I am severely cooked.");
-      printf("I am so tired of being alive.");
-      return 0;
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void deleteAtStart(struct Node** head) {
+    if (*head == NULL) {
+        printf("The list is already empty.\n");
+        return;
+    }
+    struct Node* temp = *head;
+    *head = (*head)->next;
+    free(temp);
+    printf("Node deleted at the start.\n");
 }
+
+
+void printList(struct Node* head) {
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+
+
+int main() {
+    struct Node* head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = 1;
+    head->next = (struct Node*)malloc(sizeof(struct Node));
+    head->next->data = 2;
+    head->next->next = (struct Node*)malloc(sizeof(struct Node));
+    head->next->next->data = 3;
+    head->next->next->next = NULL;
+
+    printf("Original list: ");
+    printList(head);
+
+    deleteAtStart(&head);
+
+    printf("Updated list: ");
+    printList(head);
+
+    return 0;
+}
+
