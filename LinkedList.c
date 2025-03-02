@@ -301,6 +301,8 @@ void emptyList(Node** head) {
     }
     *head = NULL;
     printf("The list has been emptied.\n");
+    printf("Press any key to continue...");
+    getchar();
 }
 
 //Misc. Functions
