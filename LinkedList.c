@@ -143,22 +143,23 @@ void traverseList(Node* head) {
 //3
 
 //4
-void insertAtEnd(Node** head, int data) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    newNode->data = data;
-    newNode->next = NULL;
+void insertAtEnd(Node** head, int value) {
+	Node *ptr, *newNode;     // ptr to act as counter inside while; newNode is THE new node
+    
+    newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = value;   // update data from "value"
+    newNode->next = NULL;    // set next to NULL to indicate end of list
 
-    if (*head == NULL) {
-        *head = newNode;
+    if (*head == NULL) {     // case check for when there is no linked list created yet
+        *head = newNode;     // points head to a new node that takes in value, and link set to NULL (basically creates a new node)
         return;
     }
 
-    Node* temp = *head;
-    while (temp->next != NULL)
-        temp = temp->next;
-
-    temp->next = newNode;
-    
+    ptr = *head;             // initialize head to ptr
+    while(ptr->next != NULL) {
+        ptr = ptr->next;     // so long as while() is true, point to the next link
+    }
+    ptr->next = newNode;     // if while() is false, set the last link to point at newNode
 }
 
 //5
