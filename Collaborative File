@@ -1,14 +1,460 @@
 #include <stdio.h>
-#include <conio.h>
 #include <ctype.h>
-#include <mem.h>
-#include <memalloc.h>
-typedef struct{
-      int data;
-      struct node *next;
-      }node;
-int main(){
-      printf("I am severely cooked.");
-      printf("I am so tired of being alive.");
-      return 0;
+#include <malloc.h>
+#include <stdlib.h>
+#include <windows.h>
+
+//TYPE DECLARATION
+typedef struct Node {
+	int data;
+	struct Node* next;
+}Node;
+
+//FUNCTION DECLARATION
+void CREATE (Node **START);
+void TRAVERSE (Node *START);
+void INSERT_START (Node **START, int value);
+void INSERT_END (Node **START, int value);
+void INSERT_BEFORE (Node **START, int before, int value);
+void INSERT_AFTER (Node **START, int after, int value);
+void DELETE_START (Node **START);
+void DELETE_END (Node **START);
+void DELETE_VALUE (Node **START, int value);
+void EMPTY (Node **START);
+void EXIT ();
+void gotoxy (int x, int y);
+void Display_Menu ();
+
+//FUNCTION TO CREATE A LIST
+void CREATE (Node **START)
+{
+	Node *NewNode = (Node*)malloc(sizeof(Node));
+	char resp;
+	int ctr=1;
+	
+	*START=NewNode;
+	printf("\n\nCreating a Single Linked List!!!\n\n");
+	do
+	{
+		printf("Node No. %d\n", ctr);
+		printf("Enter Data => ");
+		scanf("%d", &NewNode->data);
+		getchar();
+		printf("\nAdd another Node [Y/N]: ");
+		resp = getchar();
+		if (toupper(resp) == 'Y')
+		{
+			ctr++;
+			NewNode->next = (Node*)malloc(sizeof(Node));
+			NewNode=NewNode->next;
+		}
+	} while (toupper(resp) == 'Y');
+	
+//UPDATE & EXIT
+	NewNode->next=NULL;
+	NewNode=NULL;
+	getchar();
+	printf("LIST CREATED!\a\nPRESS ANY KEY TO CONTINUE...");
+	getchar();
+}
+
+//FUNCTION TO TRAVERSE THE LIST
+void TRAVERSE(Node* START)
+{
+	Node* Current=START;
+	
+	if (Current==NULL) {
+		printf("The Single Linked List is EMPTY!!!\a\n");
+		return;
+	}
+	else {
+		printf("\n\n\t<< UPDATED LIST >>\n\n\a");
+		printf("Singly contents are: ");
+		while (Current!=NULL)
+		{
+			printf("%d -> ", Current->data);
+			Current=Current->next;
+		}
+	} printf("NULL\n\n");
+	
+//UPDATE & EXIT
+	Current=NULL;
+	printf("PRESS ANY KEY TO CONTINUE...");
+	getchar();
+}
+
+//FUNCTION THAT INSERTS A NODE AT THE START
+void INSERT_START(Node **START, int value)
+{
+	Node *NewNode=(Node*)malloc(sizeof(Node));
+	
+//ATTACHING NEW NODE AT START
+	NewNode->data=value;
+	NewNode->next=*START;
+	*START=NewNode;
+	
+//UPDATE & EXIT
+	printf("NEW NODE ADDED!\a\nPRESS ANY KEY TO CONTINUE...");
+	getchar();
+}
+
+//FUNCTION THAT INSERTS A NODE AT THE END
+void INSERT_END(Node **START, int value)
+{
+	Node *NewNode = (Node*)malloc(sizeof(Node));
+	Node *END = *START;
+	
+	NewNode->data = value;
+	NewNode->next = NULL;
+	
+	if (*START == NULL) {
+		*START = NewNode;
+		return;
+	}
+	
+//FINDING THE END OF THE LINKED LIST
+	while(END->next != NULL)
+	{
+		END = END->next;		
+	}
+	
+//ATTACHING NEW NODE AT END
+	END->next = NewNode;
+	
+//UPDATE & EXIT
+	NewNode=END=NULL;
+	printf("NEW NODE ADDED!\a\nPRESS ANY KEY TO CONTINUE...");
+	getchar();
+}
+
+//FUNCTION THAT INSERTS A NODE BEFORE A VALUE
+void INSERT_BEFORE (Node **START, int before, int value)
+{
+	Node *NewNode, *Previous, *Current;
+	int Flag=0;
+	
+	NewNode=(Node*)malloc(sizeof(Node));
+	NewNode->data=value;
+	NewNode->next=NULL;
+	
+//FINDING VALUE
+	Previous=NULL;
+	Current=*START;
+	while (Flag!=1 && Current!=NULL){
+		if (before==Current->data)
+			Flag=1;
+		else{
+			Previous=Current;
+			Current=Current->next;
+		}
+	} 
+	
+//INSERTING BEFORE VALUE
+	if (Flag==1)
+	{
+		NewNode->next=Current;
+		if (Previous==NULL)
+			*START=NewNode;
+		else
+			Previous->next=NewNode;
+		NewNode=NULL;
+	} else {
+		printf("The Value where you want to insert the New Node does not exist!\a\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+		return;
+	}
+
+//UPDATE & EXIT
+	printf("NODE %d ADDED BEFORE NODE %d.\a\nPRESS ANY KEY TO CONTINUE...", value, before);
+	getchar();
+	Previous=Current=NULL;
+}
+
+//FUNCTION THAT INSERTS A NODE AFTER A VALUE
+void INSERT_AFTER(Node **START, int after, int value)
+{
+	Node *NewNode, *Previous=NULL, *Current=*START;
+	int Flag = 0;
+	
+	NewNode=(Node*)malloc(sizeof(Node));
+	NewNode->data=value;
+	NewNode->next=NULL;
+	
+//FINDING VALUE
+	while (Flag!=1 && Current!=NULL) 
+	{
+		if (after==Current->data)
+			Flag=1;
+		else
+			Current=Current->next;
+	}
+	
+//INSERTING AFTER VALUE
+	if (Flag==1) {
+		NewNode->next=Current->next;
+		Current->next=NewNode;
+		NewNode=NULL;
+	} else {
+		printf("The Value where you want to insert the New Node does not exist!\a\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+	}
+	
+//UPDATE & EXIT
+	printf("NODE %d ADDED AFTER NODE %d. \a\nPRESS ANY KEY TO CONTINUE...", value, after);
+	getchar();
+	
+}
+
+//FUNCTION THAT DELETES NODE AT THE START
+void DELETE_START(Node **START)
+{
+	if (*START == NULL) {
+		printf("The Singly Linked List is EMPTY!!!\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+		return;
+	}
+	
+	Node *DelNode = *START, *Previous;
+	*START=(*START)->next;
+	
+//UPDATE & EXIT
+	DelNode->next=NULL;
+	DelNode=NULL;
+	printf("START NODE DELETED!\a\nPRESS ANY KEY TO CONTINUE...");
+	getchar();
+}
+
+//FUNCTION THAT DELETES NODE AT THE END
+void DELETE_END(Node **START)
+{
+	if (*START == NULL) {
+		printf("Singly is EMPTY!!!\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+		return;
+	}
+	
+	Node *DelNode=*START;
+	Node *Previous=DelNode;
+	
+//FINDING END NODE
+	while(DelNode->next!=NULL) {
+		Previous = DelNode;
+		DelNode = DelNode->next;
+	}
+	
+//UPDATE & EXIT
+	Previous->next=NULL;
+	Previous=DelNode=NULL;
+	printf("END NODE DELETED!\a\nPRESS ANY KEY TO CONTINUE...");
+	getchar();
+}
+
+//FUNCTION THAT DELETES NODE BY VALUE
+void DELETE_VALUE(Node **START, int value)
+{
+	if (*START == NULL) {
+		printf("Singly is EMPTY!!!\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+		return;
+	}
+	
+	Node *Previous=NULL, *DelNode=*START;
+	int Flag=0;
+	
+//FINDING VALUE
+	while (Flag!=1 && DelNode!=NULL)
+	{
+		if(value==DelNode->data)
+			Flag=1;
+		else {
+			Previous=DelNode;
+			DelNode=DelNode->next;
+		}
+	}
+	
+//DELETING VALUE
+	if (Flag==0) {
+		printf("Value to be deleted NOT FOUND!\a\n");
+		return;
+	}
+	else
+	{
+		if (DelNode==*START) {
+			*START=(*START)->next;
+			DelNode->next=NULL;
+		} else {
+			Previous->next=DelNode->next;
+			DelNode->next=NULL;
+		}
+	}
+	
+//UPDATE & EXIT
+	getchar();
+	printf("NODE %d DELETED!\a\nPRESS ANY KEY TO CONTINUE...", DelNode->data);
+	getchar();
+	Previous=DelNode=NULL;
+}
+
+//FUNCTION THAT EMPTIES THE WHOLE LIST
+void EMPTY(Node **START)
+{
+	if (*START == NULL) {
+		printf("Singly is EMPTY!!!\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+		return;
+	}
+	
+	Node *Current=*START, *Next;
+	
+	while (Current!=NULL) {
+		Next = Current->next;
+		free(Current);
+		Current=Next;
+	}
+	
+//UPDATE & EXIT
+	*START = NULL;
+	printf("LIST EMPTIED!\a\nPRESS ANY KEY TO CONTINUE...");
+	getchar();
+}
+
+//GOTOXY FUNCTION
+void gotoxy (int x, int y){
+	COORD coord;
+	coord.X=x;
+	coord.Y=y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+//DISPLAY FUNCTION
+void Display_Menu(){
+	gotoxy(40, 1);
+		printf("<@@ SINGLY: LINKED LIST OPERATIONS @@>\n");
+
+		
+		gotoxy(10, 3);
+		printf("Menu");
+		gotoxy(10, 5);
+		printf("[1] CREATION OF LINKED LIST");
+		gotoxy(43, 5);
+		printf("[2] TRAVERSAL OF THE LIST");
+		gotoxy(73, 5);
+		printf("[3] INSERTION OF NODE AT START");
+		gotoxy(10, 7);
+		printf("[4] INSERTION OF NODE AT END");
+		gotoxy(43, 7);
+		printf("[5] INSERTION OF NODE BEFORE");
+		gotoxy(47, 8);
+		printf("A VALUE");
+		gotoxy(73, 7);
+		printf("[6] INSERTION OF NODE AFTER A VALUE");
+		gotoxy(10, 9);
+		printf("[7] DELETION AT START");
+		gotoxy(43, 9);
+		printf("[8] DELETION AT END");
+		gotoxy(73, 9);
+		printf("[9] DELETION BY VALUE");
+		gotoxy(30, 11);
+		printf("[10] EMPTY LINKED LIST");
+		gotoxy(63, 11);
+		printf("[11] EXIT PROGRAM");
+	
+}
+
+//MAIN FUNCTION
+int main ()
+{
+	Node* START=NULL;
+	int choice, value, before, after;
+	char resp;
+
+	do
+	{
+		system("cls");
+		Display_Menu();
+		printf("\nEnter your choice: ");
+		scanf("%d", &choice);
+		getchar();
+		
+		switch (choice) 
+		{
+			case 1:
+				CREATE(&START);
+				TRAVERSE(START);
+				break;
+				
+			case 2:
+				TRAVERSE(START);
+				break;
+				
+			case 3:
+				printf("Enter value to be inserted at the START\n\tValue => ");
+				scanf("%d", &value);
+				getchar();
+				INSERT_START(&START, value);
+				TRAVERSE(START);
+				break;
+				
+			case 4:
+				printf("Enter value to be inserted at the END\n\tValue => ");
+				scanf("%d", &value);
+				getchar();
+				INSERT_END(&START, value);
+				TRAVERSE(START);
+				break;
+				
+			case 5:
+				printf("Enter value to be inserted\n\tValue => ");
+				scanf("%d", &value);
+				printf("Enter node value to be stored BEFORE it\n\tNode Value: ");
+				scanf("%d", &before);
+				getchar();
+				INSERT_BEFORE(&START, before, value);
+				TRAVERSE(START);
+				break;
+				
+			case 6:
+				printf("Enter value to be inserted\n\tValue => ");
+				scanf("%d", &value);
+				printf("Enter node value to be stored AFTER it\n\tNode Value: ");
+				scanf("%d", &after);
+				getchar();
+				INSERT_AFTER(&START, after, value);
+				TRAVERSE(START);
+				break;
+				
+			case 7:
+				DELETE_START(&START);
+				TRAVERSE(START);
+				break;
+				
+			case 8:
+				DELETE_END(&START);
+				TRAVERSE(START);
+				break;
+				
+			case 9:
+				printf("Enter value to be deleted\n\tValue => ");
+				scanf("%d", &value);
+				getchar();
+				DELETE_VALUE(&START, value);
+				TRAVERSE(START);
+				break;
+				
+			case 10:
+				EMPTY(&START);
+				break;
+				
+			case 11:
+				printf("PRESS ANY KEY TO EXIT...");
+				getchar();
+				return 0;
+				
+			default:
+				printf("INVALID CHOICE! Choose from 1 to 11.\n");
+				printf("PRESS ANY KEY TO CONTINUE...");
+				getchar();
+				break;
+		}
+	} while (choice!=11);
 }
