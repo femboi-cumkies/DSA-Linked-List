@@ -16,6 +16,7 @@ void traverseList(Node* head);
 void insertAtEnd(Node** head, int value);
 void insertBeforeValue(Node** head, int *value, int *data);
 void insertAfterValue(Node** head, int *value, int *data);
+void deleteAtStart(Node** head); 
 void deleteByValue(Node **head, int value);
 void emptyList(Node** head);
 void gotoxy (int x, int y);
