@@ -6,7 +6,7 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
-void insert_at_end (Node *head, int value) {
+void insertAtEnd (Node *head, int value) {
     Node *ptr, *newNode;     // ptr to act as counter inside while; newNode is THE new node
     ptr = head;              // initialize head to ptr
 
