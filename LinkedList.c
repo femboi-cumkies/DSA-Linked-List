@@ -13,7 +13,7 @@ typedef struct Node {
 //Function declaration
 void createList(Node** head, char Resp);
 void traverseList(Node* head);
-void insertAtEnd(Node** head, int data);
+void insertAtEnd(Node** head, int value);
 void insertBeforeValue(Node** head, int *value, int *data);
 void insertAfterValue(Node** head, int *value, int *data);
 void deleteByValue(Node **head, int value);
