@@ -13,6 +13,7 @@ typedef struct Node {
 //Function declaration
 void createList(Node** head, char Resp);
 void traverseList(Node* head);
+void insertAtStart(Node** head, int data);
 void insertAtEnd(Node** head, int value);
 void insertBeforeValue(Node** head, int *value, int *data);
 void insertAfterValue(Node** head, int *value, int *data);
@@ -45,7 +46,10 @@ int main() {
                 traverseList(head);
                 break;
             case 3:
-                
+    		printf("Enter value to insert at the start: ");
+    		scanf("%d", &value);
+    		insertAtStart(&head, value);
+    		break;
             case 4:
                 printf("Enter value to insert: ");
                 scanf("%d", &value);
@@ -141,6 +145,17 @@ void traverseList(Node* head) {
 }
 
 //3
+void insertAtStart(Node** head, int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed.\n");
+        return;
+    }
+    
+    newNode->data = data;
+    newNode->next = *head;
+    *head = newNode;
+}
 
 //4
 void insertAtEnd(Node** head, int value) {
