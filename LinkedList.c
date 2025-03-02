@@ -62,7 +62,8 @@ int main() {
             	insertAfterValue(&head, &data, &value);
             	break;
             case 7:
-            	
+            	 deleteAtStart(&head);
+                  break;
             case 8:
             	
             case 9:
@@ -266,7 +267,18 @@ void insertAfterValue(Node** head, int *value, int *data){
 	
 }
 //7
-
+void deleteAtStart(Node** head) {
+    if (*head == NULL)
+        printf("List is already empty!\n");
+    else {
+        Node* temp = *head;
+        *head = (*head)->next;
+        free(temp);
+        printf("First node deleted successfully.\n");
+    }
+    printf("\nPress any key to continue...");
+    getchar();
+}
 //8
 
 //9
