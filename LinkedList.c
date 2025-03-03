@@ -144,6 +144,7 @@ void traverseList(Node* head) {
 
 //4
 void insertAtEnd(Node** head, int value) {
+	getchar();
 	Node *ptr, *newNode;     // ptr to act as counter inside while; newNode is THE new node
     
     newNode = (Node*)malloc(sizeof(Node));
@@ -160,6 +161,10 @@ void insertAtEnd(Node** head, int value) {
         ptr = ptr->next;     // so long as while() is true, point to the next link
     }
     ptr->next = newNode;     // if while() is false, set the last link to point at newNode
+
+	printf("Node successfully inserted!\n");
+	printf("Press any key to continue...");
+	getchar();
 }
 
 //5
