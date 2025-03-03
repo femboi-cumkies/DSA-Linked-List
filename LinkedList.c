@@ -18,6 +18,7 @@ void insertAtEnd(Node** head, int value);
 void insertBeforeValue(Node** head, int *value, int *data);
 void insertAfterValue(Node** head, int *value, int *data);
 void deleteAtStart(Node** head); 
+void deleteAtEnd(Node** head);
 void deleteByValue(Node **head, int value);
 void emptyList(Node** head);
 void gotoxy (int x, int y);
@@ -63,10 +64,11 @@ int main() {
             	insertAfterValue(&head, &data, &value);
             	break;
             case 7:
-            	 deleteAtStart(&head);
-                  break;
+            	deleteAtStart(&head);
+                break;
             case 8:
-            	
+            	deleteAtEnd(&head);
+				break;
             case 9:
             	printf("Enter value to be deleted\n\tValue => ");
 				scanf("%d", &value);
@@ -280,7 +282,27 @@ void deleteAtStart(Node** head) {
     printf("\nPress any key to continue...");
     getchar();
 }
+
 //8
+void deleteAtEnd(Node** head) {
+	if (*head == NULL) {
+		printf("List is already empty!\n\nPress any key to continue...");
+		getchar();
+		return;
+	}
+		Node *DelNode = *head;
+		Node *Previous = DelNode;
+
+	while (DelNode->next != NULL) {
+			Previous = DelNode;
+			DelNode = DelNode->next;
+		}
+
+		Previous->next = NULL;
+		Previous = DelNode = NULL;
+		printf("End Node is Deleted\n\nPress any key to continue...");
+		getchar();
+}
 
 //9
 
