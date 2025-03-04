@@ -50,6 +50,7 @@ int main() {
             case 3:
     		printf("Enter value to insert at the start: ");
     		scanf("%d", &value);
+		getchar();
     		insertAtStart(&head, value);
     		break;
             case 4:
@@ -159,6 +160,9 @@ void insertAtStart(Node** head, int data) {
     newNode->data = data;
     newNode->next = *head;
     *head = newNode;
+    printf("\nNode successfully inserted!");
+    printf("\nPress any key to continue...");
+    getchar();
 }
 
 //4
