@@ -283,7 +283,7 @@ void deleteAtStart(Node** head) {
     getchar();
 }
 
-//8
+// 8
 void deleteAtEnd(Node** head) {
 	if (*head == NULL) {
 		printf("List is already empty!\n\nPress any key to continue...");
