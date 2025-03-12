@@ -70,11 +70,11 @@ int main() {
                 insertAtEnd(&tail, value);
                 break;
             case 6:
-				    printf("Enter value to insert; ");
-			    	scanf("%d", &value);
-				    printf("Select reference node where the new node will be inserted before it: ");
-				    scanf("%d", &item);
-            	insertBeforeValue(&head, &value, &item);
+				printf("Enter value to insert: ");
+			    scanf("%d", &value);
+				printf("Enter node value to be stored BEFORE it: ");
+				scanf("%d", &item);
+            	insertBeforeValue(&head, &tail, value, item);
             	break;
             case 7:
             	printf("Enter value to be inserted: ");
@@ -152,10 +152,7 @@ void insertAtEnd(Node** tail, int value) {
 
 //6
 
-void insertBeforeValue(Node** head, Node** tail,  int value, int data){
-
-
-void insertBeforeValue(Node** head, int value, int item){
+void insertBeforeValue(Node** head, Node** tail, int value, int item){
 	Node* newNode = (Node*)malloc(sizeof(Node));
 	
 	newNode->prev = NULL;
@@ -203,7 +200,7 @@ void insertAfterValue(Node** head, Node** tail, int value, int data){
 	NewNode->prev=NULL;
 	NewNode->data=data;
 	Current = *head;
-	
+
 	if (Current == NULL) {
 		printf("Doubly is EMPTY!\nPRESS ANY KEY TO CONTINUE...");
 		getchar();
@@ -211,7 +208,6 @@ void insertAfterValue(Node** head, Node** tail, int value, int data){
 	} else while (Current->data==value && Current!=NULL) {
 		Current = Current->next;
 	}
-	
 	if (Current->data != value) {
 		printf("The Value where you want to insert the New Node does not exist!\nPRESS ANY KEY TO CONTINUE...");
 		getchar();
