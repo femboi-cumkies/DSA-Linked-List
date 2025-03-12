@@ -23,6 +23,7 @@ void insertAtStart(Node** head, int data);
 void insertAtEnd(Node** tail, int value);
 void insertBeforeValue(Node** head, Node** tail, int value, int data);
 void insertAfterValue(Node** head, Node** tail, int value, int data);
+
 void deleteAtStart(Node** head); 
 void deleteAtEnd(Node** tail);
 void deleteByValue(Node **head, int value);
@@ -35,7 +36,7 @@ void displayMenu();
 int main() {
     Node* head = NULL;
     Node* tail = NULL;
-    int action, value, data;
+    int action, value, data, item;
     char Resp;
     
     while (1) {
@@ -69,11 +70,11 @@ int main() {
                 insertAtEnd(&tail, value);
                 break;
             case 6:
-            	printf("Enter value to be inserted: ");
-            	scanf("%d", &data);
-            	printf("Enter node value to be stored AFTER it\n\tNode Value: ");
-            	scanf("%d", &value);
-            	insertBeforeValue(&head, &tail, data, value);
+				    printf("Enter value to insert; ");
+			    	scanf("%d", &value);
+				    printf("Select reference node where the new node will be inserted before it: ");
+				    scanf("%d", &item);
+            	insertBeforeValue(&head, &value, &item);
             	break;
             case 7:
             	printf("Enter value to be inserted: ");
@@ -119,9 +120,17 @@ void createList(Node** head, char Resp){
 	
 }
 
-//2
+//2 DONE
 void traverseListTopToBottom(Node* head) {
-
+	Node* current = head;
+	
+	if (current == NULL)
+		printf("Double/Doubly Linked List is EMPTY!");
+	else
+		do {
+			printf("%d ", current->data);
+			current = current->next;
+		} while (current != NULL);
 }
 
 //3
@@ -145,6 +154,45 @@ void insertAtEnd(Node** tail, int value) {
 
 void insertBeforeValue(Node** head, Node** tail,  int value, int data){
 
+
+void insertBeforeValue(Node** head, int value, int item){
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	
+	newNode->prev = NULL;
+	newNode->next = NULL;
+	
+	int flag = 0;
+	Node* current = *head;
+	
+	if (current == NULL)
+		printf("Double/Doubly Linked List is EMPTY!");
+	else {
+		while(flag == 0 && current != NULL) {
+			if (current->data == item)
+				flag = 1;
+			else
+				current = current->next;
+		}
+	}
+	
+	if (flag == 0)
+		printf("The reference node where the New Node will be inserted before it does not exist.\n");
+	else {
+		if (current == *head) {
+			newNode->next = *head;
+			(*head)->prev = newNode;
+			*head = newNode;	// will newNode->prev = NULL work here?
+			(*head)->data = value;
+		} else {
+			newNode->next = current;
+			newNode->prev = current->prev;
+			current->prev->next = newNode;
+			current->prev = newNode;
+			newNode->data = value;
+		}
+		
+		current = newNode = NULL;
+	}	
 }
 //7
 void insertAfterValue(Node** head, Node** tail, int value, int data){
