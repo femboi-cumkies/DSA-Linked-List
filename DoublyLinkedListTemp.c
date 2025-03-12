@@ -20,7 +20,7 @@ void createList(Node** head, char Resp);
 void traverseListTopToBottom(Node* head);
 void traverseListBottomToTop(Node* tail);
 void insertAtStart(Node** head, int data);
-void insertAtEnd(Node** tail, int value);
+void insertAtEnd(Node** head, Node** tail, int value);
 void insertBeforeValue(Node** head, Node** tail, int value, int data);
 void insertAfterValue(Node** head, Node** tail, int value, int data);
 
@@ -141,14 +141,53 @@ void traverseListBottomToTop(Node* tail) {
 //4
 
 void insertAtStart(Node** head, int data) {
+	Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed\n");
+        return;
+    }
 
+    newNode->data = data;
+    newNode->prev = NULL;
+    newNode->next = *head;
+
+    if (*head != NULL) {
+        (*head)->prev = newNode;
+    }
+    *head = newNode;
+	printf("\nNode successfully inserted!\n");
+	printf("Press any key to continue. . .");
+	getchar();
 }
 
 //5
 
-void insertAtEnd(Node** tail, int value) {
-
+void insertAtEnd(Node** head, Node** tail, int value) {
+	Node* newNode = (Node*)malloc(sizeof(Node));
+if (newNode == NULL) {
+	printf("Memory allocation failed\n");
+	return;
 }
+
+newNode->data = value;
+newNode->next = NULL;
+
+if (*head == NULL) {
+	newNode->prev = NULL;
+	*head = newNode;
+	*tail = newNode;
+}
+	else {
+		newNode->prev = *tail;
+		(*tail)->next = newNode;
+		*tail = newNode;  
+	}
+
+printf("\nNode successfully inserted!\n");
+printf("Press any key to continue. . .");
+getchar();
+}
+
 
 //6
 
