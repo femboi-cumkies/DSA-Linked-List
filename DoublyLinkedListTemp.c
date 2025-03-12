@@ -234,11 +234,43 @@ void insertAfterValue(Node** head, Node** tail, int value, int data){
 
 // 8
 void deleteAtStart(Node** head) {
+	struct Node* temp;
+
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    temp = head;
+    head = head->next;
+
+    if (head != NULL) {
+        head->prev = NULL;
+    }
+
+    free(temp);
+    printf("Start node removed.\n");
 
 }
 
 //9
 void deleteAtEnd(Node** tail) {
+	Node* temp;
+
+    if (*tail == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    temp = *tail;
+    *tail = (*tail)->prev;
+
+    if (*tail != NULL) {
+        (*tail)->next = NULL;
+    }
+
+    free(temp);
+    printf("End node removed.\n");
 
 }
 
