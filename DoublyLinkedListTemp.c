@@ -21,8 +21,9 @@ void traverseListTopToBottom(Node* head);
 void traverseListBottomToTop(Node* tail);
 void insertAtStart(Node** head, int data);
 void insertAtEnd(Node** tail, int value);
-void insertBeforeValue(Node** head, int value, int data);
-void insertAfterValue(Node** head, int *value, int *data);
+void insertBeforeValue(Node** head, Node** tail, int value, int data);
+void insertAfterValue(Node** head, Node** tail, int value, int data);
+
 void deleteAtStart(Node** head); 
 void deleteAtEnd(Node** tail);
 void deleteByValue(Node **head, int value);
@@ -69,14 +70,18 @@ int main() {
                 insertAtEnd(&tail, value);
                 break;
             case 6:
-				printf("Enter value to insert; ");
-				scanf("%d", &value);
-				printf("Select reference node where the new node will be inserted before it: ");
-				scanf("%d", &item);
+				    printf("Enter value to insert; ");
+			    	scanf("%d", &value);
+				    printf("Select reference node where the new node will be inserted before it: ");
+				    scanf("%d", &item);
             	insertBeforeValue(&head, &value, &item);
             	break;
             case 7:
-            	insertAfterValue(&head, &data, &value);
+            	printf("Enter value to be inserted: ");
+            	scanf("%d", &data);
+            	printf("Enter node value to be stored AFTER it\n\tNode Value: ");
+            	scanf("%d", &value);
+            	insertAfterValue(&head, &tail, data, value);
             	break;
             case 8:
             	deleteAtStart(&head);
@@ -145,7 +150,10 @@ void insertAtEnd(Node** tail, int value) {
 
 }
 
-//6 DONE
+//6
+
+void insertBeforeValue(Node** head, Node** tail,  int value, int data){
+
 
 void insertBeforeValue(Node** head, int value, int item){
 	Node* newNode = (Node*)malloc(sizeof(Node));
@@ -187,8 +195,41 @@ void insertBeforeValue(Node** head, int value, int item){
 	}	
 }
 //7
-void insertAfterValue(Node** head, int *value, int *data){
+void insertAfterValue(Node** head, Node** tail, int value, int data){
+	Node *NewNode, *Current;
 	
+	NewNode = (Node*)malloc(sizeof(Node));
+	NewNode->next=NULL;
+	NewNode->prev=NULL;
+	NewNode->data=data;
+	Current = *head;
+	
+	if (Current == NULL) {
+		printf("Doubly is EMPTY!\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+		return;
+	} else while (Current->data==value && Current!=NULL) {
+		Current = Current->next;
+	}
+	
+	if (Current->data != value) {
+		printf("The Value where you want to insert the New Node does not exist!\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+		return;
+	} else {
+		if (Current == *tail) {
+			NewNode->prev = *tail;
+			NewNode->prev->next = NewNode;
+			*tail = NewNode;
+		} else {
+			NewNode->next = Current->next;
+			NewNode->prev = Current;
+			Current->next->prev = NewNode;
+			Current->next = NewNode;
+		}
+		Current=NewNode=NULL;
+	}
+		
 }
 
 // 8
@@ -204,7 +245,36 @@ void deleteAtEnd(Node** tail) {
 
 //10
 void deleteByValue(Node **head, int value){
+	Node *DelNode;
+	DelNode = *head;
 	
+	if(DelNode == NULL) {
+		printf("Double is EMPTY!\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+		return;
+	} else while (DelNode->data == value && DelNode != NULL) {
+		DelNode = DelNode->next;
+	} 
+	
+	if (DelNode->data != value) {
+		printf("Value to be deleted NOT FOUND!\nPRESS ANY KEY TO CONTINUE...");
+		getchar();
+		return;
+	} else if (DelNode == *head) {
+		*head = (*head)->next;
+		(*head)->prev=NULL;
+		DelNode->next=NULL;
+	} else {
+		DelNode->prev->next = DelNode->next;
+		DelNode->next->prev = DelNode->prev;
+		DelNode->next=NULL;
+		DelNode->prev=NULL;
+	}
+	
+	printf("NODE with value of %d DELETED!\nPRESS ANY KEY TO CONTINUE...", DelNode->data);
+	getchar();
+	free(DelNode);
+	DelNode = NULL;
 }
 //11
 void emptyList(Node** head) {
@@ -253,7 +323,9 @@ void displayMenu(){
 		gotoxy(77, 8);
 		printf("A VALUE");
 		gotoxy(10, 9);
-		printf("[7] INSERTION OF NODE AFTER A VALUE");
+		printf("[7] INSERTION OF NODE AFTER");
+		gotoxy(14, 10);
+		printf("A VALUE");
 		gotoxy(43, 9);
 		printf("[8] DELETION AT START");
 		gotoxy(73, 9);
